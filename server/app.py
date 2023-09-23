@@ -14,6 +14,7 @@ migrate = Migrate(app, db)
 
 db.init_app(app)
 
+
 @app.route('/messages', methods=['GET', 'POST'])
 def messages():
     if request.method == 'GET':
@@ -23,7 +24,7 @@ def messages():
             jsonify([message.to_dict() for message in messages]),
             200,
         )
-    
+
     elif request.method == 'POST':
         data = request.get_json()
         message = Message(
@@ -41,6 +42,7 @@ def messages():
 
     return response
 
+
 @app.route('/messages/<int:id>', methods=['PATCH', 'DELETE'])
 def messages_by_id(id):
     message = Message.query.filter_by(id=id).first()
@@ -49,7 +51,7 @@ def messages_by_id(id):
         data = request.get_json()
         for attr in data:
             setattr(message, attr, data[attr])
-            
+
         db.session.add(message)
         db.session.commit()
 
@@ -69,5 +71,6 @@ def messages_by_id(id):
 
     return response
 
+
 if __name__ == "__main__":
-    app.run(port=5555)
+    app.run(port=4000)
